@@ -20,12 +20,15 @@ int main()
 void tokenizer()
 {
     // Store reserved words of C/Java into an array
-    const char *reserveWords[] = {"int", "float", "if", "else", "while", "for", /* Add more reserved words */};
+    const char *reserveWords[] = {"int", "float", "if", "else", "while", "for", "abstract", "continue", "new", "switch", "assert", "default",
+                                  "package", "synchronized", "boolean", "do", "private", "this", "break", "double", "protected", "implements", "throw", "byte", "return",
+                                  "import", "public", "throws", "case", "enum", "instanceof", "transient", "catch", "extands", "short", "try", "char", "final", "interface",
+                                  "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while"};
 
     // Create an array named 'lexeme' to store lexemes
     char lexeme[30];
-    int state = 0;                                         // Variable representing states
-    char specifiers[] = {'n', 'a', 't', 'r', 'b', 39, 92}; // 39 represents ' and 92 represents \
+    int state = 0;                                                                      // Variable representing states
+    char specifiers[] = {'n', 'a', 't', 'r', 'b', 'f', 0, 1, 2, 3, 4, 5, 6, 7, 39, 92}; // 39 represents ' and 92 represents
     int i = 0, j = 0, k = 0, flag = 0;
 
     // Open input.txt for reading and output.txt for writing
