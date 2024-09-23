@@ -1,6 +1,7 @@
+// ahmed
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>  // For getch(), can be removed if not necessary
+#include <conio.h> // For getch(), can be removed if not necessary
 
 void tokenizer();
 void error();
@@ -12,7 +13,7 @@ int main()
     // Call to tokenizer to generate tokens
     tokenizer();
     printf("Tokens have been identified successfully....!!!");
-    getch();  // Remove if unnecessary
+    getch(); // Remove if unnecessary
     return 0;
 }
 
@@ -23,8 +24,8 @@ void tokenizer()
 
     // Create an array named 'lexeme' to store lexemes
     char lexeme[30];
-    int state = 0;        // Variable representing states
-    char specifiers[] = {'n', 'a', 't', 'r', 'b', 39, 92};  // 39 represents ' and 92 represents \
+    int state = 0;                                         // Variable representing states
+    char specifiers[] = {'n', 'a', 't', 'r', 'b', 39, 92}; // 39 represents ' and 92 represents \
     int i = 0, j = 0, k = 0, flag = 0;
 
     // Open input.txt for reading and output.txt for writing
@@ -62,7 +63,7 @@ void tokenizer()
 
         case 2:
             state = 0;
-            lexeme[i] = '\0';  // Storing null character at the end of lexeme
+            lexeme[i] = '\0'; // Storing null character at the end of lexeme
 
             // Check if lexeme is a reserved word
             for (j = 0; j < 32; j++)
@@ -75,12 +76,12 @@ void tokenizer()
             }
 
             // Write lexeme and token in the output file
-            if (flag)  // If it is a reserved word
+            if (flag) // If it is a reserved word
             {
                 fprintf(outputFile, "Lexeme: %s, Token: Reserved Word\n", lexeme);
                 flag = 0;
             }
-            else  // If it is an identifier
+            else // If it is an identifier
             {
                 fprintf(outputFile, "Lexeme: %s, Token: ID\n", lexeme);
             }
@@ -103,16 +104,16 @@ void tokenizer()
             i = 0;
             break;
 
-        // Continue with all states in the integrated FA for recognizing:
-        // (i) Arithmetic Operators (+, -, *, /, %)
-        // (ii) Arithmetic Assignment Operators (+=, -=, *=, /=, %=)
-        // (iii) Relational Operators (<, <=, >, >=, ==, !=)
-        // (iv) Logical Operators (&&, ||, !)
-        // (v) Increment/Decrement Operators (++ --)
-        // (vi) Single Line and Multi-Line Comments
-        // (vii) Character and String literals
-        // (viii) Integer and float literals
-        // (ix) Punctuation Marks ([, ], (, ), ;, :, ,) etc.
+            // Continue with all states in the integrated FA for recognizing:
+            // (i) Arithmetic Operators (+, -, *, /, %)
+            // (ii) Arithmetic Assignment Operators (+=, -=, *=, /=, %=)
+            // (iii) Relational Operators (<, <=, >, >=, ==, !=)
+            // (iv) Logical Operators (&&, ||, !)
+            // (v) Increment/Decrement Operators (++ --)
+            // (vi) Single Line and Multi-Line Comments
+            // (vii) Character and String literals
+            // (viii) Integer and float literals
+            // (ix) Punctuation Marks ([, ], (, ), ;, :, ,) etc.
         }
     }
 
@@ -125,5 +126,5 @@ void error()
 {
     printf("Error: UNRECOGNIZED_TOKEN\n");
     // Read one character and store it in lookahead variable
-    lookahead = fgetc(stdin);  // Adjust as necessary
+    lookahead = fgetc(stdin); // Adjust as necessary
 }
