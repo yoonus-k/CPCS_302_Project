@@ -1,4 +1,4 @@
-// ahmed
+// ahmed yoonus
 #include <stdio.h>
 #include <string.h>
 #include <conio.h> // For getch(), can be removed if not necessary
