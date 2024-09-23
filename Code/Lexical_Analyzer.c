@@ -47,76 +47,80 @@ void tokenizer()
         switch (state)
         {
         case 0:
+            if (lookahead == ('\t' | '\n' | '\r' | ' '))
+            {
+                state = 0;
+                lookahead = fgetc(inputFile);
+                break;
+            }
+            else if (lookahead == '>')
+            {
+                state = 1;
+                lexeme[i++] = lookahead;
+            }
+            else if (lookahead == '<')
+            {
+                state = 4;
+                lexeme[i++] = lookahead;
+            }
+
             // Add code for all outgoing arrows from state 0
             // Example: Identifiers, Arithmetic Operators, Relational Operators, etc.
             // ...
             // If no valid token is identified, call error function
-            error();
-            state = 0;
-            break;
+            else
+            {
+                error();
+                state = 0;
+                break;
+            }
 
         case 1:
-            // Read the next character from the input file
-            lookahead = fgetc(inputFile);
-
-            // Write code for all outgoing arrows from this state
-            // ...
-
+            if (lookahead == '=')
+            {
+                state = 3;
+            }
+            else
+            {
+                state = 2;
+            }
             break;
 
         case 2:
             state = 0;
-            lexeme[i] = '\0'; // Storing null character at the end of lexeme
-
-            // Check if lexeme is a reserved word
-            for (j = 0; j < 32; j++)
-            {
-                if (strcmp(lexeme, reserveWords[j]) == 0)
-                {
-                    flag = 1;
-                    break;
-                }
-            }
-
-            // Write lexeme and token in the output file
-            if (flag) // If it is a reserved word
-            {
-                fprintf(outputFile, "Lexeme: %s, Token: Reserved Word\n", lexeme);
-                flag = 0;
-            }
-            else // If it is an identifier
-            {
-                fprintf(outputFile, "Lexeme: %s, Token: ID\n", lexeme);
-            }
+            fprintf(outputFile, "Lexeme: %s, Token: grater_op\n", lexeme);
             i = 0;
             break;
 
         case 3:
-            // Read one character and store it in lookahead variable
-            lookahead = fgetc(inputFile);
-
-            // Corresponding code for digits
-            // ...
-
-            break;
-
-        case 4:
             state = 0;
             lexeme[i] = '\0';
-            fprintf(outputFile, "Lexeme: %s, Token: INTEGER\n", lexeme);
+            fprintf(outputFile, "Lexeme: %s, Token: grater_eq_op\n", lexeme);
             i = 0;
             break;
 
-            // Continue with all states in the integrated FA for recognizing:
-            // (i) Arithmetic Operators (+, -, *, /, %)
-            // (ii) Arithmetic Assignment Operators (+=, -=, *=, /=, %=)
-            // (iii) Relational Operators (<, <=, >, >=, ==, !=)
-            // (iv) Logical Operators (&&, ||, !)
-            // (v) Increment/Decrement Operators (++ --)
-            // (vi) Single Line and Multi-Line Comments
-            // (vii) Character and String literals
-            // (viii) Integer and float literals
-            // (ix) Punctuation Marks ([, ], (, ), ;, :, ,) etc.
+        case 4:
+            if (lookahead == '=')
+            {
+                state = 6;
+            }
+            else
+            {
+                state = 5;
+            }
+            break;
+
+        case 5:
+            state = 0;
+            fprintf(outputFile, "Lexeme: %s, Token: less_op\n", lexeme);
+            i = 0;
+            break;
+        case 6:
+            state = 0;
+            lexeme[i] = '\0';
+            fprintf(outputFile, "Lexeme: %s, Token: less_eq_op\n", lexeme);
+            i = 0;
+            break;
         }
     }
 
