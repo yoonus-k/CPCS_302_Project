@@ -27,8 +27,13 @@ void tokenizer()
 
     // Create an array named 'lexeme' to store lexemes
     char lexeme[30];
+<<<<<<< Updated upstream
     int state = 0;                                                                      // Variable representing states
     char specifiers[] = {'n', 'a', 't', 'r', 'b', 'f', 0, 1, 2, 3, 4, 5, 6, 7, 39, 92}; // 39 represents ' and 92 represents
+=======
+    int state = 0;                                         // Variable representing states
+    char specifiers[] = {'n', 'a', 't', 'r', 'b', 39, 92}; // 39 represents ' and 92 represents 
+>>>>>>> Stashed changes
     int i = 0, j = 0, k = 0, flag = 0;
 
     // Open input.txt for reading and output.txt for writing
@@ -67,7 +72,7 @@ void tokenizer()
         case 2:
             state = 0;
             lexeme[i] = '\0'; // Storing null character at the end of lexeme
-
+            
             // Check if lexeme is a reserved word
             for (j = 0; j < 32; j++)
             {
