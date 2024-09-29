@@ -426,18 +426,13 @@ public class Tokenizer {
                         lookahead = (char) inputFile.read();
                         // check the specifiers
                         if (isSpecifier(lookahead)) {
-                            lookahead = (char) inputFile.read();
-                            if (lookahead == '\'') {
-                                lexeme[i++] = lookahead;
-                                outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Char");
-                                i = 0; // Reset lexeme
-                                state = 0;
-
-                                break;
-                            }
+                            lexeme[i++] = lookahead;
+                            state = 41;
+                            break;
 
                         } else {
-                            error(lookahead);
+                            System.out.println("Error: UNRECOGNIZED_TOKEN: " +String.valueOf(lexeme, 0, i) );
+                            
 
                         }
 
@@ -463,8 +458,7 @@ public class Tokenizer {
                             }
                             break;
                         } else {
-                            
-                            System.out.println("Error: UNRECOGNIZED_TOKEN: " +String.valueOf(lexeme, 0, i ));
+                            error(lookahead);
                         }
                         i = 0; // Reset lexeme
                         state = 0;
