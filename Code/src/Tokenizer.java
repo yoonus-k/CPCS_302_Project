@@ -18,8 +18,23 @@ public class Tokenizer {
                 "byte", "return", "import", "public", "throws", "case", "enum",
                 "instanceof", "transient", "catch", "extends", "short", "try", "char",
                 "final", "interface", "static", "void", "class", "finally", "long",
-                "strictfp", "volatile", "const", "native", "super", "while"
+                "strictfp", "volatile", "const", "native", "super", "while", "true", "false", "null", "String",
+                "System", "out", "println", "print", "Scanner", "nextInt", "nextLine", "next", "nextDouble",
+                "nextFloat", "nextBoolean", "nextByte", "nextShort", "nextLong", "nextChar", "Math", "abs", "acos",
+                "asin", "atan", "atan2", "cbrt", "ceil", "copySign", "cos", "cosh", "exp", "expm1", "floor",
+                "getExponent", "hypot", "IEEEremainder", "log", "log10", "log1p", "max", "min", "nextAfter", "nextDown",
+                "nextUp", "pow", "random", "rint", "round", "scalb", "signum", "sin", "sinh", "sqrt", "tan", "tanh",
+                "toDegrees", "toRadians", "ulp", "Date", "Calendar", "SimpleDateFormat", "getTime", "setTime", "set",
+                "get", "add", "roll", "clear", "before", "after", "compareTo", "equals", "getFirstDayOfWeek",
+                "getMinimalDaysInFirstWeek", "getTimeZone", "setTimeZone", "getAvailableIDs", "getDisplayName",
+                "getDSTSavings", "getID", "getOffset", "getTimeInMillis",
+                "main", "args", "length", "out", "println", "print", "Scanner", "nextInt", "nextLine", "next",
+                "nextDouble", "nextFloat", "nextBoolean", "nextByte", "nextShort", "nextLong", "nextChar",
+
         };
+
+        // char to store the specifiers
+        char[] specifiers = { 'n', 't', 'r', 'b', 'f', 'v', 'a', '\\', '\'', '\"' };
 
         // Array to store lexemes
         char[] lexeme = new char[30];
@@ -28,7 +43,7 @@ public class Tokenizer {
 
         // Use PushbackReader to allow unreading characters
         try (PushbackReader inputFile = new PushbackReader(new FileReader("input.txt"), 1);
-             PrintWriter outputFile = new PrintWriter(new FileWriter("output.txt"))) {
+                PrintWriter outputFile = new PrintWriter(new FileWriter("output.txt"))) {
 
             // Read one character at a time from the input file
             while (inputFile.ready()) {
@@ -36,7 +51,7 @@ public class Tokenizer {
                 switch (state) {
                     case 0:
                         lookahead = (char) inputFile.read();
-                        if (Character.isWhitespace(lookahead)) {
+                        if (Character.isWhitespace(lookahead) || lookahead == '\n' || lookahead == '\r') {
                             // Ignore whitespace
                         } else if (lookahead == '>') {
                             state = 1;
@@ -62,44 +77,73 @@ public class Tokenizer {
                         } else if (lookahead == '*') {
                             state = 23;
                             lexeme[i++] = lookahead;
+                        } else if (lookahead == '/') {
+                            state = 26;
+                            lexeme[i++] = lookahead;
                         } else if (lookahead == '%') {
                             state = 32;
                             lexeme[i++] = lookahead;
                         } else if (lookahead == '|') {
                             state = 35;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == '&') {
+                        } else if (lookahead == '&') {
                             state = 38;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == '"') {
+                        } else if (lookahead == '"') {
                             state = 41;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == ';') {
+                        } else if (lookahead == '\'') {
+                            state = 43;
+                            lexeme[i++] = lookahead;
+                        }
+
+                        else if (lookahead == ';') {
                             state = 47;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == ':') {
+                        } else if (lookahead == ':') {
                             state = 48;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == ',') {
+                        } else if (lookahead == ',') {
                             state = 49;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == '{') {
+                        } else if (lookahead == '{') {
                             state = 52;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == '}') {
+                        } else if (lookahead == '}') {
                             state = 53;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == '[') {
+                        } else if (lookahead == '[') {
                             state = 54;
                             lexeme[i++] = lookahead;
-                        }else if (lookahead == ']') {
+                        } else if (lookahead == ']') {
                             state = 55;
                             lexeme[i++] = lookahead;
-                        }else if (Character.isDigit(lookahead)) {
+                        } else if (lookahead == '(') {
+                            state = 56;
+                            lexeme[i++] = lookahead;
+                        } else if (lookahead == ')') {
+                            state = 57;
+                            lexeme[i++] = lookahead;
+                        } else if (lookahead == '#') {
+                            state = 58;
+                            lexeme[i++] = lookahead;
+                        } else if (lookahead == '~') {
+                            state = 59;
+                            lexeme[i++] = lookahead;
+                        } else if (lookahead == '`') {
+                            state = 60;
+                            lexeme[i++] = lookahead;
+                        } else if (lookahead == '@') {
+                            state = 61;
+                            lexeme[i++] = lookahead;
+                        } else if (lookahead == '?') {
+                            state = 62;
+                            lexeme[i++] = lookahead;
+                        } else if (Character.isDigit(lookahead)) {
                             state = 63;
                             lexeme[i++] = lookahead;
-                        }else {
-                            error();
+                        } else {
+                            error(lookahead);
                         }
                         break;
 
@@ -146,7 +190,8 @@ public class Tokenizer {
                         lookahead = (char) inputFile.read();
                         if (lookahead == '=') {
                             lexeme[i++] = lookahead;
-                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: relational_not_eq");
+                            outputFile
+                                    .println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: relational_not_eq");
                         } else {
                             inputFile.unread(lookahead); // Unread the character
                             outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: logical_NOT");
@@ -157,13 +202,27 @@ public class Tokenizer {
 
                     case 13: // Handles '&'
                         lookahead = (char) inputFile.read();
-                        if (Character.isLetter(lookahead) | lookahead == '$' | lookahead == '_' | Character.isDigit(lookahead)) {
+                        if (Character.isLetter(lookahead) | lookahead == '$' | lookahead == '_'
+                                | Character.isDigit(lookahead)) {
                             lexeme[i++] = lookahead;
                             state = 13;
                             break;
                         } else {
                             inputFile.unread(lookahead); // Unread the character
-                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: id");
+                            boolean isReserveWord = false;
+                            // Check if the lexeme is a reserved word
+                            for (int j = 0; j < reserveWords.length; j++) {
+                                if (String.valueOf(lexeme, 0, i).equals(reserveWords[j])) {
+                                    outputFile.println(
+                                            "Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: " + reserveWords[j]);
+                                    isReserveWord = true;
+                                    break;
+                                }
+                            }
+                            if (!isReserveWord) {
+                                outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: id");
+                            }
+
                         }
                         i = 0; // Reset lexeme
                         state = 0;
@@ -195,7 +254,8 @@ public class Tokenizer {
                             outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Dec");
                         } else {
                             inputFile.unread(lookahead); // Unread the character
-                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: arithmetic_subtraction");
+                            outputFile.println(
+                                    "Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: arithmetic_subtraction");
                         }
                         i = 0; // Reset lexeme
                         state = 0;
@@ -208,11 +268,72 @@ public class Tokenizer {
                             outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: multiply_assign");
                         } else {
                             inputFile.unread(lookahead); // Unread the character
-                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: arithmetic_multiplication_op");
+                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i)
+                                    + ", Token: arithmetic_multiplication_op");
                         }
                         i = 0; // Reset lexeme
                         state = 0;
                         break;
+
+                    case 26: // Handles '/'
+                        lookahead = (char) inputFile.read();
+                        if (lookahead == '=') {
+                            lexeme[i++] = lookahead;
+                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: divide_assign");
+
+                        } else if (lookahead == '/') {
+                            lexeme[i++] = lookahead;
+                            while (lookahead != '\n') {
+                                lookahead = (char) inputFile.read();
+                            }
+
+                        } else if (lookahead == '*') {
+                            lexeme[i++] = lookahead;
+                            state = 30;
+                            break;
+
+                        } else {
+                            inputFile.unread(lookahead); // Unread the character
+                            outputFile.println(
+                                    "Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: arithmetic_division_op");
+                        }
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 30: // Handles '*'
+
+                        lookahead = (char) inputFile.read();
+                        if (lookahead == '*') {
+                            lexeme[i++] = lookahead;
+                            state = 31;
+                            
+                            break;
+
+                        } else {
+                            
+                            break;
+
+                        }
+                       
+                    case 31: // Handles '*'
+
+                        lookahead = (char) inputFile.read();
+                        if (lookahead == '/') {
+                            i = 0;
+                            state = 0;
+                            break;
+                        } else if (lookahead == '*') {
+                            
+
+                            break;
+
+                        } else {
+                            lexeme[i++] = lookahead;
+                            state = 30;
+                            break;
+                        }
+
+                       
 
                     case 32: // Handles '%'
                         lookahead = (char) inputFile.read();
@@ -221,7 +342,8 @@ public class Tokenizer {
                             outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: mod_assign");
                         } else {
                             inputFile.unread(lookahead); // Unread the character
-                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: arithmetic_mod_op");
+                            outputFile
+                                    .println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: arithmetic_mod_op");
                         }
                         i = 0; // Reset lexeme
                         state = 0;
@@ -265,6 +387,50 @@ public class Tokenizer {
                         i = 0; // Reset lexeme
                         state = 0;
                         break;
+
+                    case 43: // Handles '\''
+                        lookahead = (char) inputFile.read();
+                        if (lookahead == '\\') {
+                            lexeme[i++] = lookahead;
+                            state = 45;
+                            break;
+                        } else {
+                            lexeme[i++] = lookahead;
+                            lookahead = (char) inputFile.read();
+                            if (lookahead == '\'') {
+                                lexeme[i++] = lookahead;
+                                outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Char");
+                            } else {
+                                error(lookahead);
+                            }
+
+                        }
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+
+                    case 45: // Handles '\''
+                        lookahead = (char) inputFile.read();
+                        // check the specifiers
+                        for (int j = 0; j < specifiers.length; j++) {
+                            if (lookahead == specifiers[j]) {
+                                lexeme[i++] = lookahead;
+                                lookahead = (char) inputFile.read();
+                                if (lookahead == '\'') {
+                                    lexeme[i++] = lookahead;
+                                    outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Char");
+                                    i = 0; // Reset lexeme
+                                    state = 0;
+                                    break;
+                                } else {
+                                    error(lookahead);
+                                }
+                            }
+
+                        }
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
                     case 47: // Handles ';'
                         outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: semi_colon");
                         i = 0; // Reset lexeme
@@ -300,6 +466,42 @@ public class Tokenizer {
                         i = 0; // Reset lexeme
                         state = 0;
                         break;
+                    case 56: // Handles '('
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: open_parenthesis");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 57: // Handles ')'
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: close_parenthesis");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 58: // Handles '#'
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: hash");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 59: // Handles '~'
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: tilde");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 60: // Handles '`'
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: back_quote");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 61: // Handles '@'
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: at");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+                    case 62: // Handles '?'
+                        outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: question_mark");
+                        i = 0; // Reset lexeme
+                        state = 0;
+                        break;
+
                     case 63: // Handles 'Digits'
                         lookahead = (char) inputFile.read();
                         if (Character.isDigit(lookahead)) {
@@ -312,7 +514,7 @@ public class Tokenizer {
                             break;
                         } else {
                             inputFile.unread(lookahead); // Unread the character
-                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Int");
+                            outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Int_Literal");
                         }
                         i = 0; // Reset lexeme
                         state = 0;
@@ -340,7 +542,7 @@ public class Tokenizer {
         }
     }
 
-    public static void error() {
-        System.out.println("Error: UNRECOGNIZED_TOKEN");
+    public static void error(char c) {
+        System.out.println("Error: UNRECOGNIZED_TOKEN: " + c);
     }
 }
