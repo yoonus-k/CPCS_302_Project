@@ -1,5 +1,5 @@
 import java.io.*;
-// test
+
 public class Tokenizer {
 
     static char lookahead; // To store the current character being read
@@ -379,27 +379,12 @@ public class Tokenizer {
                             lexeme[i++] = lookahead;
                             outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: String");
                         } else if (lookahead == '\\') {
-                            lexeme[i++] = lookahead;
-                            // check the specifiers 
-                            for (int j = 0; j < specifiers.length; j++) {
-                                lookahead = (char) inputFile.read();
-                                if (lookahead == specifiers[j]) {
-                                    lexeme[i++] = lookahead;
-                                    lookahead = (char) inputFile.read();
-                                    if (lookahead == '"') {
-                                        lexeme[i++] = lookahead;
-                                        outputFile
-                                                .println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: String");
-                                    } else {
-                                        lexeme[i++] = lookahead;
-                                        state = 41;
-                                        break;
 
-                                    }
-                                } else {
-                                    error(lookahead);
-                                }
-                            }
+                            // check the specifiers
+                            lexeme[i++] = lookahead;
+                            state = 50;
+                            break;
+
                         }
 
                         else {
@@ -417,6 +402,12 @@ public class Tokenizer {
                             lexeme[i++] = lookahead;
                             state = 45;
                             break;
+                        } else if (lookahead == '\'') {
+                            System.out.println("Error: UNRECOGNIZED_TOKEN: ''");
+                            i = 0; // Reset lexeme
+                            state = 0;
+                            break;
+
                         } else {
                             lexeme[i++] = lookahead;
                             lookahead = (char) inputFile.read();
@@ -431,26 +422,49 @@ public class Tokenizer {
                         i = 0; // Reset lexeme
                         state = 0;
                         break;
+                    case 50: // Handles '\''
+                        lookahead = (char) inputFile.read();
+                        // check the specifiers
+                        if (isSpecifier(lookahead)) {
+                            lookahead = (char) inputFile.read();
+                            if (lookahead == '\'') {
+                                lexeme[i++] = lookahead;
+                                outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Char");
+                                i = 0; // Reset lexeme
+                                state = 0;
+
+                                break;
+                            }
+
+                        } else {
+                            error(lookahead);
+
+                        }
+
+                        i = 0; // Reset lexeme
+                        state = 0;
+
+                        break;
 
                     case 45: // Handles '\''
                         lookahead = (char) inputFile.read();
                         // check the specifiers
-                        for (int j = 0; j < specifiers.length; j++) {
-                            if (lookahead == specifiers[j]) {
+                        if (isSpecifier(lookahead)) {
+                            lexeme[i++] = lookahead;
+                            lookahead = (char) inputFile.read();
+                            if (lookahead == '\'') {
                                 lexeme[i++] = lookahead;
-                                lookahead = (char) inputFile.read();
-                                if (lookahead == '\'') {
-                                    lexeme[i++] = lookahead;
-                                    outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Char");
-                                    i = 0; // Reset lexeme
-                                    state = 0;
-                                    break;
-
-                                } else {
-                                    error(lookahead);
-                                }
+                                outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: Char");
+                                i = 0; // Reset lexeme
+                                state = 0;
+                                break;
+                            } else {
+                                error(lookahead);
                             }
-
+                            break;
+                        } else {
+                            
+                            System.out.println("Error: UNRECOGNIZED_TOKEN: " +String.valueOf(lexeme, 0, i ));
                         }
                         i = 0; // Reset lexeme
                         state = 0;
@@ -568,5 +582,16 @@ public class Tokenizer {
 
     public static void error(char c) {
         System.out.println("Error: UNRECOGNIZED_TOKEN: " + c);
+    }
+    // function to check if the character is a specifier
+
+    public static boolean isSpecifier(char c) {
+        char[] specifiers = { 'n', 't', 'r', 'b', 'f', 'v', 'a', '\\', '\'', '\"' };
+        for (int i = 0; i < specifiers.length; i++) {
+            if (c == specifiers[i]) {
+                return true;
+            }
+        }
+        return false;
     }
 }
