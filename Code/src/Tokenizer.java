@@ -285,6 +285,8 @@ public class Tokenizer {
                             lexeme[i++] = lookahead;
                             while (lookahead != '\n') {
                                 lookahead = (char) inputFile.read();
+                                // if the end of the file is reached
+
                             }
 
                         } else if (lookahead == '*') {
@@ -306,15 +308,15 @@ public class Tokenizer {
                         if (lookahead == '*') {
                             lexeme[i++] = lookahead;
                             state = 31;
-                            
+
                             break;
 
                         } else {
-                            
+
                             break;
 
                         }
-                       
+
                     case 31: // Handles '*'
 
                         lookahead = (char) inputFile.read();
@@ -323,7 +325,6 @@ public class Tokenizer {
                             state = 0;
                             break;
                         } else if (lookahead == '*') {
-                            
 
                             break;
 
@@ -332,8 +333,6 @@ public class Tokenizer {
                             state = 30;
                             break;
                         }
-
-                       
 
                     case 32: // Handles '%'
                         lookahead = (char) inputFile.read();
@@ -379,7 +378,31 @@ public class Tokenizer {
                         if (lookahead == '"') {
                             lexeme[i++] = lookahead;
                             outputFile.println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: String");
-                        } else {
+                        } else if (lookahead == '\\') {
+                            lexeme[i++] = lookahead;
+                            // check the specifiers 
+                            for (int j = 0; j < specifiers.length; j++) {
+                                lookahead = (char) inputFile.read();
+                                if (lookahead == specifiers[j]) {
+                                    lexeme[i++] = lookahead;
+                                    lookahead = (char) inputFile.read();
+                                    if (lookahead == '"') {
+                                        lexeme[i++] = lookahead;
+                                        outputFile
+                                                .println("Lexeme: " + String.valueOf(lexeme, 0, i) + ", Token: String");
+                                    } else {
+                                        lexeme[i++] = lookahead;
+                                        state = 41;
+                                        break;
+
+                                    }
+                                } else {
+                                    error(lookahead);
+                                }
+                            }
+                        }
+
+                        else {
                             lexeme[i++] = lookahead;
                             state = 41;
                             break;
@@ -422,6 +445,7 @@ public class Tokenizer {
                                     i = 0; // Reset lexeme
                                     state = 0;
                                     break;
+
                                 } else {
                                     error(lookahead);
                                 }
