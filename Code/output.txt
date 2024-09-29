@@ -1,1 +1,0 @@
-Lexeme: "ahmed\sasdf", Token: String
