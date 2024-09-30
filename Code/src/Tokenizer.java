@@ -1,4 +1,11 @@
 import java.io.*;
+/* Group Project ( Lexical Analyzer )
+Student Names:
+1. YOONUS KIZHAKKETHIL (2142644)
+2. Ahmed Osama Kentar (2148843)
+3. Abdulkareem Almahlawi (2148850)
+Section: CS1
+*/
 
 public class Tokenizer {
 
@@ -48,101 +55,102 @@ public class Tokenizer {
             // Read one character at a time from the input file
             while (inputFile.ready()) {
 
-                switch (state) {
+                switch (state) { // Switch on the current state
                     case 0:
                         lookahead = (char) inputFile.read();
                         if (Character.isWhitespace(lookahead) || lookahead == '\n' || lookahead == '\r') {
                             // Ignore whitespace
-                        } else if (lookahead == '>') {
+                        } else if (lookahead == '>') { // Handles '>'
                             state = 1;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '<') {
+                        } else if (lookahead == '<') { // Handles '<'
                             state = 4;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '=') {
+                        } else if (lookahead == '=') { // Handles '='
                             state = 7;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '!') {
+                        } else if (lookahead == '!') { // Handles '!' 
                             state = 10;
                             lexeme[i++] = lookahead;
-                        } else if (Character.isLetter(lookahead) | lookahead == '$' | lookahead == '_') {
+                        } else if (Character.isLetter(lookahead) | lookahead == '$' | lookahead == '_') { // Handles
+                                                                                                        // identifiers
                             state = 13;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '+') {
+                        } else if (lookahead == '+') { // Handles '+'
                             state = 15;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '-') {
+                        } else if (lookahead == '-') { // Handles '-'
                             state = 19;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '*') {
+                        } else if (lookahead == '*') { // Handles '*'
                             state = 23;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '/') {
+                        } else if (lookahead == '/') { // Handles '/' 
                             state = 26;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '%') {
+                        } else if (lookahead == '%') { // Handles '%'
                             state = 32;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '|') {
+                        } else if (lookahead == '|') { // Handles '|'
                             state = 35;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '&') {
+                        } else if (lookahead == '&') { // Handles '&'
                             state = 38;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '"') {
+                        } else if (lookahead == '"') { // Handles '"'
                             state = 41;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '\'') {
+                        } else if (lookahead == '\'') { // Handles '\''
                             state = 43;
                             lexeme[i++] = lookahead;
                         }
 
-                        else if (lookahead == ';') {
+                        else if (lookahead == ';') { // Handles ';'
                             state = 47;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == ':') {
+                        } else if (lookahead == ':') { // Handles ':'
                             state = 48;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == ',') {
+                        } else if (lookahead == ',') { // Handles ',' 
                             state = 49;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '{') {
+                        } else if (lookahead == '{') {  // Handles '{'
                             state = 52;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '}') {
+                        } else if (lookahead == '}') { // Handles '}'
                             state = 53;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '[') {
+                        } else if (lookahead == '[') { // Handles '['
                             state = 54;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == ']') {
+                        } else if (lookahead == ']') { // Handles ']'
                             state = 55;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '(') {
+                        } else if (lookahead == '(') { // Handles '(' 
                             state = 56;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == ')') {
+                        } else if (lookahead == ')') { // Handles ')'
                             state = 57;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '#') {
+                        } else if (lookahead == '#') { // Handles '#' 
                             state = 58;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '~') {
+                        } else if (lookahead == '~') {  // Handles '~'
                             state = 59;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '`') {
+                        } else if (lookahead == '`') { // Handles '`'
                             state = 60;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '@') {
+                        } else if (lookahead == '@') { // Handles '@' 
                             state = 61;
                             lexeme[i++] = lookahead;
-                        } else if (lookahead == '?') {
+                        } else if (lookahead == '?') { // Handles '?'
                             state = 62;
                             lexeme[i++] = lookahead;
-                        } else if (Character.isDigit(lookahead)) {
+                        } else if (Character.isDigit(lookahead)) { // Handles digits
                             state = 63;
                             lexeme[i++] = lookahead;
-                        } else {
+                        } else { // Handles other characters
                             error(lookahead);
                         }
                         break;
@@ -568,22 +576,22 @@ public class Tokenizer {
                     // Add more cases as necessary for other operators
                 }
             }
-            outputFile.flush();
+            outputFile.flush(); // Flush the output buffer
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void error(char c) {
+    public static void error(char c) { // Function to print error message
         System.out.println("Error: UNRECOGNIZED_TOKEN: " + c);
     }
     // function to check if the character is a specifier
 
-    public static boolean isSpecifier(char c) {
+    public static boolean isSpecifier(char c) { // Function to check if the character is a specifier
         char[] specifiers = { 'n', 't', 'r', 'b', 'f', 'v', 'a', '\\', '\'', '\"' };
-        for (int i = 0; i < specifiers.length; i++) {
+        for (int i = 0; i < specifiers.length; i++) { // Loop through the specifiers array
             if (c == specifiers[i]) {
-                return true;
+                return true; // Return true if the character is a specifier
             }
         }
         return false;
