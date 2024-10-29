@@ -1,6 +1,12 @@
 import java.io.*;
 import java.util.StringTokenizer;
-
+/* Group Project ( Lexical Analyzer )
+Student Names:
+1. YOONUS KIZHAKKETHIL (2142644)
+2. Ahmed Osama Kentar (2148843)
+3. Abdulkareem Almahlawi (2148850)
+Section: CS1
+*/
 public class Recursive_Descent_Predictive_Parser {
     private static StringTokenizer tokens;
     private static String lookahead;
