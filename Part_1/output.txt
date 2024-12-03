@@ -1,0 +1,5 @@
+Lexeme: x, Token: id
+Lexeme: ++, Token: inc
+Lexeme: +, Token: arithmetic_add
+Lexeme: a, Token: id
+Lexeme: ;, Token: semi_colon

@@ -41,7 +41,7 @@ public class Tokenizer {
         };
 
         // char to store the specifiers
-        char[] specifiers = { 'n', 't', 'r', 'b', 'f', 'v', 'a', '\\', '\'', '\"' };
+        char[] specifiers = { 'n', 't', 'r', 'b', 'f', 'v', 'a', '\\', '\'', '\"' }; 
 
         // Array to store lexemes
         char[] lexeme = new char[30];

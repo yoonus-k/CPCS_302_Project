@@ -2,6 +2,27 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "Recursive_Descent_Predictive_Parser",
+      "request": "launch",
+      "mainClass": "Recursive_Descent_Predictive_Parser",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Tokenizer",
+      "request": "launch",
+      "mainClass": "Tokenizer",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "SQL_Query_Validator",
+      "request": "launch",
+      "mainClass": "CPCS302_GroupProject_Part3/GroupProject_Part3_Package.SQL_Query_Validator",
+      "projectName": "Part_3"
+    },
+    {
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",

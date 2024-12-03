@@ -1,11 +1,17 @@
 /**
  * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */
+/*
+Student Names:
+1. YOONUS KIZHAKKETHIL (2142644)
+2. Ahmed Osama Kentar (2148843)
+3. Abdulkareem Almahlawi (2148850)
+Section: CS1
+*/
 options
 {
   static = true;
 }
-
 PARSER_BEGIN(SQL_Query_Validator)
 package GroupProject_Part3_Package;
 
@@ -15,7 +21,7 @@ public class SQL_Query_Validator
   {
     SQL_Query_Validator parser = new SQL_Query_Validator(System.in);
 
-        System.out.println("Enter any query:");
+        System.out.print("Enter any query:");
         try {
             parser.query();
             System.out.println("Valid SQL Query");
